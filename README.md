@@ -8,7 +8,7 @@
 
 * **Project Title:** Zero-Trust High School Management System
 * **Course:** 23AIE303 – Database Management Systems
-* **Batch / Group:** Team 17 | Batch 2 (2024–2028)
+* **Batch / Group:** B17
 * **Database Engine:** PostgreSQL 16 (Relational Database Management System)
 
 ### Team Members & Contributions
