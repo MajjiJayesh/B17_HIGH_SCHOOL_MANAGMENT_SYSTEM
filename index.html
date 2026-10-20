@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Trust High School Management</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#1e293b;
+}
+
+button{
+    font-family:inherit;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:245px;
+    background:#172554;
+    color:white;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    padding:22px 14px;
+    overflow-y:auto;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:5px 10px 25px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    margin-bottom:18px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:#3b82f6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:17px;
+}
+
+.logo h2{
+    font-size:15px;
+}
+
+.logo span{
+    font-size:11px;
+    color:#bfdbfe;
+}
+
+.menu-title{
+    font-size:10px;
+    color:#93c5fd;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    padding:10px 12px;
+}
+
+.nav-item{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#dbeafe;
+    padding:11px 13px;
+    margin:3px 0;
+    border-radius:8px;
+    text-align:left;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:13px;
+    transition:.2s;
+}
+
+.nav-item:hover{
+    background:#263b73;
+    color:white;
+    transform:translateX(3px);
+}
+
+.nav-item.active{
+    background:#3b82f6;
+    color:white;
+    box-shadow:0 5px 15px rgba(59,130,246,.3);
+}
+
+.nav-icon{
+    width:20px;
+    text-align:center;
+    font-size:15px;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    margin-left:245px;
+    width:calc(100% - 245px);
+}
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+    height:70px;
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.search{
+    width:310px;
+    position:relative;
+}
+
+.search input{
+    width:100%;
+    padding:10px 15px 10px 38px;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    outline:none;
+    background:#f8fafc;
+}
+
+.search input:focus{
+    border-color:#3b82f6;
+    background:white;
+}
+
+.search span{
+    position:absolute;
+    left:13px;
+    top:9px;
+    color:#64748b;
+}
+
+.top-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.online{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    color:#475569;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.avatar{
+    width:37px;
+    height:37px;
+    border-radius:50%;
+    background:#dbeafe;
+    color:#1d4ed8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.profile small{
+    display:block;
+    color:#64748b;
+    font-size:10px;
+}
+
+/* ================= CONTENT ================= */
+
+.content{
+    padding:28px 30px;
+}
+
+.page-heading{
+    margin-bottom:24px;
+}
+
+.page-heading h1{
+    font-size:25px;
+    margin-bottom:5px;
+}
+
+.page-heading p{
+    color:#64748b;
+    font-size:13px;
+}
+
+/* ================= DASHBOARD CARDS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:11px;
+    padding:17px;
+    transition:.25s;
+}
+
+.stat-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(15,23,42,.08);
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-icon{
+    width:38px;
+    height:38px;
+    border-radius:9px;
+    background:#eff6ff;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.stat-label{
+    font-size:12px;
+    color:#64748b;
+}
+
+.stat-number{
+    font-size:25px;
+    font-weight:700;
+    margin-top:5px;
+}
+
+.stat-footer{
+    margin-top:9px;
+    font-size:10px;
+    color:#16a34a;
+}
+
+/* ================= DASHBOARD GRID ================= */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:11px;
+    padding:20px;
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.card-header h2{
+    font-size:17px;
+}
+
+.card-header p{
+    color:#64748b;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.live{
+    color:#16a34a;
+    font-size:11px;
+    font-weight:600;
+}
+
+/* ================= OVERVIEW ================= */
+
+.overview{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.overview-item{
+    padding:14px;
+    background:#f8fafc;
+    border-radius:8px;
+    transition:.2s;
+}
+
+.overview-item:hover{
+    background:#eff6ff;
+}
+
+.overview-item span{
+    color:#64748b;
+    font-size:11px;
+}
+
+.overview-item strong{
+    display:block;
+    font-size:20px;
+    margin-top:4px;
+}
+
+/* ================= QUICK ACTIONS ================= */
+
+.quick-action{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:11px 12px;
+    margin-bottom:8px;
+    border:1px solid #edf2f7;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.quick-action:hover{
+    background:#eff6ff;
+    border-color:#bfdbfe;
+    transform:translateX(3px);
+}
+
+.quick-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.quick-icon{
+    width:32px;
+    height:32px;
+    border-radius:7px;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#2563eb;
+}
+
+.quick-action span{
+    font-size:12px;
+}
+
+/* ================= LOWER GRID ================= */
+
+.lower-grid{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr;
+    gap:18px;
+}
+
+.activity{
+    padding:11px 0;
+    border-bottom:1px solid #eef2f7;
+    display:flex;
+    justify-content:space-between;
+}
+
+.activity:last-child{
+    border-bottom:0;
+}
+
+.activity strong{
+    font-size:12px;
+}
+
+.activity small{
+    display:block;
+    color:#64748b;
+    margin-top:3px;
+    font-size:10px;
+}
+
+.badge{
+    padding:4px 8px;
+    border-radius:20px;
+    font-size:9px;
+    font-weight:600;
+}
+
+.badge-green{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.badge-blue{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.badge-orange{
+    background:#ffedd5;
+    color:#c2410c;
+}
+
+/* ================= MODULE PAGE ================= */
+
+.module{
+    display:none;
+}
+
+.module.active{
+    display:block;
+}
+
+.module-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:11px;
+    padding:20px;
+}
+
+.module-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.module-header h2{
+    font-size:19px;
+}
+
+.module-header p{
+    color:#64748b;
+    font-size:12px;
+    margin-top:4px;
+}
+
+/* ================= BUTTONS ================= */
+
+.primary{
+    border:0;
+    background:#2563eb;
+    color:white;
+    padding:10px 15px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:12px;
+    transition:.2s;
+}
+
+.primary:hover{
+    background:#1d4ed8;
+    transform:translateY(-1px);
+    box-shadow:0 5px 14px rgba(37,99,235,.25);
+}
+
+.secondary{
+    border:1px solid #cbd5e1;
+    background:white;
+    color:#475569;
+    padding:9px 14px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.secondary:hover{
+    background:#f8fafc;
+}
+
+.edit{
+    border:0;
+    background:#f59e0b;
+    color:white;
+    padding:6px 9px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.delete{
+    border:0;
+    background:#ef4444;
+    color:white;
+    padding:6px 9px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.edit:hover{
+    background:#d97706;
+}
+
+.delete:hover{
+    background:#dc2626;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#f8fafc;
+    color:#475569;
+    text-transform:uppercase;
+    font-size:10px;
+    letter-spacing:.5px;
+    padding:12px;
+    text-align:left;
+    border-bottom:1px solid #e2e8f0;
+}
+
+td{
+    padding:13px 12px;
+    border-bottom:1px solid #eef2f7;
+    font-size:12px;
+}
+
+tbody tr{
+    transition:.2s;
+}
+
+tbody tr:hover{
+    background:#f8fbff;
+}
+
+.status-active{
+    background:#dcfce7;
+    color:#15803d;
+    padding:4px 8px;
+    border-radius:20px;
+    font-size:9px;
+    font-weight:bold;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.55);
+    backdrop-filter:blur(3px);
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:500px;
+    max-width:92%;
+    background:white;
+    border-radius:12px;
+    padding:24px;
+    box-shadow:0 20px 50px rgba(0,0,0,.2);
+    animation:openModal .2s ease;
+}
+
+@keyframes openModal{
+    from{
+        opacity:0;
+        transform:scale(.95);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.close{
+    border:0;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+    color:#64748b;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.form-group{
+    margin-bottom:13px;
+}
+
+.form-group.full{
+    grid-column:1 / -1;
+}
+
+.form-group label{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:9px;
+    border:1px solid #cbd5e1;
+    border-radius:6px;
+    outline:none;
+}
+
+.form-group textarea{
+    height:80px;
+    resize:none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.1);
+}
+
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:9px;
+    margin-top:15px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1200px){
+
+    .stats{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:850px){
+
+    .sidebar{
+        width:75px;
+    }
+
+    .main{
+        margin-left:75px;
+        width:calc(100% - 75px);
+    }
+
+    .logo div:not(.logo-icon),
+    .nav-item span:not(.nav-icon),
+    .menu-title{
+        display:none;
+    }
+
+    .nav-item{
+        justify-content:center;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .lower-grid{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .search{
+        width:180px;
+    }
+
+    .content{
+        padding:20px 15px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+}
+
+/* ================= LOGIN ================= */
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f4f7fb;padding:24px;}
+.login-card{width:390px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:30px;box-shadow:0 20px 50px rgba(15,23,42,.12);}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.login-logo .logo-icon{background:#2563eb;color:#fff;}
+.login-card h1{font-size:24px;margin-bottom:6px;}
+.login-card p{font-size:13px;color:#64748b;margin-bottom:22px;}
+.login-card label{display:block;font-size:12px;font-weight:600;margin:14px 0 7px;}
+.login-card input{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:8px;outline:none;}
+.login-card input:focus{border-color:#2563eb;}
+.login-card .login-btn{width:100%;margin-top:20px;}
+.login-error{display:none;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;padding:10px;border-radius:8px;font-size:12px;margin-top:14px;}
+.demo-note{font-size:11px;color:#64748b;margin-top:14px;text-align:center;}
+</style>
+</head>
+
+<body>
+
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">HS</div>
+      <div><strong>Zero Trust</strong><br><span style="font-size:11px;color:#64748b">High School Management</span></div>
+    </div>
+    <h1>Secure Login</h1>
+    <p>Sign in before accessing the school management dashboard.</p>
+    <label for="loginUsername">Username</label>
+    <input id="loginUsername" autocomplete="username" placeholder="admin01">
+    <label for="loginPassword">Password</label>
+    <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password">
+    <button class="primary login-btn" onclick="doLogin()">Login</button>
+    <div id="loginError" class="login-error"></div>
+    <div class="demo-note">Local demo login: <b>admin01</b> / <b>Admin@123</b></div>
+  </div>
+</div>
+
+<div class="app" id="appShell" style="display:none;">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">HS</div>
+
+        <div>
+            <h2>Zero Trust</h2>
+            <span>High School Management</span>
+        </div>
+
+    </div>
+
+    <div class="menu-title">Main Menu</div>
+
+    <button class="nav-item active" onclick="showPage('dashboard',this)">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('users',this)">
+        <span class="nav-icon">●</span>
+        <span>Users</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('students',this)">
+        <span class="nav-icon">♙</span>
+        <span>Students</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('teachers',this)">
+        <span class="nav-icon">♟</span>
+        <span>Teachers</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('parents',this)">
+        <span class="nav-icon">◉</span>
+        <span>Parents</span>
+    </button>
+
+    <div class="menu-title">Academic</div>
+
+    <button class="nav-item" onclick="showPage('courses',this)">
+        <span class="nav-icon">◆</span>
+        <span>Courses</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('enrollment',this)">
+        <span class="nav-icon">▣</span>
+        <span>Enrollment</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('attendance',this)">
+        <span class="nav-icon">✓</span>
+        <span>Attendance</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('assignments',this)">
+        <span class="nav-icon">□</span>
+        <span>Assignments</span>
+    </button>
+
+    <button class="nav-item" onclick="showPage('marks',this)">
+        <span class="nav-icon">★</span>
+        <span>Marks</span>
+    </button>
+
+    <div class="menu-title">Security</div>
+
+    <button class="nav-item" onclick="showPage('audit',this)">
+        <span class="nav-icon">◈</span>
+        <span>Audit Logs</span>
+    </button>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div class="search">
+            <span>⌕</span>
+            <input type="text" placeholder="Search students, teachers, courses...">
+        </div>
+
+        <div class="top-right">
+
+            <div class="online">
+                <span class="dot"></span>
+                System Online
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">A</div>
+
+                <div>
+                    <strong style="font-size:12px;">Administrator</strong>
+                    <small>System Admin</small>
+                </div>
+                <button class="secondary" style="margin-left:12px;padding:7px 10px;font-size:11px;" onclick="logout()">Logout</button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="module active">
+
+    <div class="page-heading">
+
+        <h1>Dashboard</h1>
+
+        <p>Overview of your school management system</p>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+                    <div class="stat-label">Students</div>
+                    <div class="stat-number" id="statStudents">0</div>
+                </div>
+
+                <div class="stat-icon">S</div>
+
+            </div>
+
+            <div class="stat-footer">● Active records</div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+                    <div class="stat-label">Teachers</div>
+                    <div class="stat-number" id="statTeachers">0</div>
+                </div>
+
+                <div class="stat-icon">T</div>
+
+            </div>
+
+            <div class="stat-footer">● Active teachers</div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+                    <div class="stat-label">Courses</div>
+                    <div class="stat-number" id="statCourses">0</div>
+                </div>
+
+                <div class="stat-icon">C</div>
+
+            </div>
+
+            <div class="stat-footer">● Available courses</div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+                    <div class="stat-label">Enrollments</div>
+                    <div class="stat-number" id="statEnrollments">—</div>
+                </div>
+
+                <div class="stat-icon">E</div>
+
+            </div>
+
+            <div class="stat-footer">● Live from PostgreSQL</div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+                    <div class="stat-label">Assignments</div>
+                    <div class="stat-number" id="statAssignments">0</div>
+                </div>
+
+                <div class="stat-icon">A</div>
+
+            </div>
+
+            <div class="stat-footer">● Live from PostgreSQL</div>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>School Overview</h2>
+                    <p>Current academic records</p>
+                </div>
+
+                <span class="live">● LIVE</span>
+
+            </div>
+
+
+            <div class="overview">
+
+                <div class="overview-item">
+                    <span>Total Students</span>
+                    <strong id="overviewStudents">0</strong>
+                </div>
+
+                <div class="overview-item">
+                    <span>Total Teachers</span>
+                    <strong id="overviewTeachers">0</strong>
+                </div>
+
+                <div class="overview-item">
+                    <span>Total Parents</span>
+                    <strong id="overviewParents">0</strong>
+                </div>
+
+                <div class="overview-item">
+                    <span>Total Courses</span>
+                    <strong id="overviewCourses">0</strong>
+                </div>
+
+                <div class="overview-item">
+                    <span>Active Enrollments</span>
+                    <strong id="overviewEnrollments">—</strong>
+                </div>
+
+                <div class="overview-item">
+                    <span>Attendance Today</span>
+                    <strong id="overviewAttendance">—</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Common operations</p>
+                </div>
+
+            </div>
+
+
+            <div class="quick-action" onclick="openModal('student')">
+                <div class="quick-left">
+                    <div class="quick-icon">+</div>
+                    <span>Add Student</span>
+                </div>
+                <b>→</b>
+            </div>
+
+
+            <div class="quick-action" onclick="openModal('assignment')">
+                <div class="quick-left">
+                    <div class="quick-icon">+</div>
+                    <span>Create Assignment</span>
+                </div>
+                <b>→</b>
+            </div>
+
+
+            <div class="quick-action" onclick="openModal('enrollment')">
+                <div class="quick-left">
+                    <div class="quick-icon">+</div>
+                    <span>New Enrollment</span>
+                </div>
+                <b>→</b>
+            </div>
+
+
+            <div class="quick-action" onclick="openModal('attendance')">
+                <div class="quick-left">
+                    <div class="quick-icon">✓</div>
+                    <span>Record Attendance</span>
+                </div>
+                <b>→</b>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="lower-grid">
+
+        <div class="card">
+
+            <div class="card-header">
+                <div>
+                    <h2>Recent Assignments</h2>
+                    <p>Latest academic activities</p>
+                </div>
+            </div>
+
+            <div class="activity">
+                <div>
+                    <strong>Mathematics Assignment</strong>
+                    <small>Due: 20 Aug 2026</small>
+                </div>
+                <span class="badge badge-green">ACTIVE</span>
+            </div>
+
+            <div class="activity">
+                <div>
+                    <strong>Science Project</strong>
+                    <small>Due: 23 Aug 2026</small>
+                </div>
+                <span class="badge badge-green">ACTIVE</span>
+            </div>
+
+            <div class="activity">
+                <div>
+                    <strong>English Essay</strong>
+                    <small>Due: 25 Aug 2026</small>
+                </div>
+                <span class="badge badge-orange">DUE SOON</span>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+                <div>
+                    <h2>Attendance</h2>
+                    <p>Today's status</p>
+                </div>
+            </div>
+
+            <div class="overview-item">
+                <span>Present</span>
+                <strong>117</strong>
+            </div>
+
+            <br>
+
+            <div class="overview-item">
+                <span>Absent</span>
+                <strong>7</strong>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+                <div>
+                    <h2>System Security</h2>
+                    <p>Security overview</p>
+                </div>
+            </div>
+
+            <div class="overview-item">
+                <span>Authentication</span>
+                <strong style="color:#16a34a;">Active</strong>
+            </div>
+
+            <br>
+
+            <div class="overview-item">
+                <span>Audit Logging</span>
+                <strong style="color:#16a34a;">Enabled</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= USERS ================= -->
+
+<section id="users" class="module">
+
+    <div class="page-heading">
+        <h1>User Management</h1>
+        <p>Manage system users, roles and account status</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>System Users</h2>
+                <p>Users table will be connected to PostgreSQL</p>
+            </div>
+
+            <button class="primary" onclick="openModal('user')">
+                + Add User
+            </button>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User Code</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="usersTableBody"><tr><td colspan="7">Loading users...</td></tr></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STUDENTS ================= -->
+
+<section id="students" class="module">
+
+    <div class="page-heading">
+        <h1>Students</h1>
+        <p>Student admission and academic information</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+            <div>
+                <h2>Student Records</h2>
+                <p>Student ID, grade, section and admission details</p>
+            </div>
+
+            <button class="primary" onclick="openModal('student')">
+                + Add Student
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Student Code</th>
+                        <th>Student Name</th>
+                        <th>Date of Birth</th>
+                        <th>Grade</th>
+                        <th>Section</th>
+                        <th>Admission Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentsTableBody"><tr><td colspan="7">Loading students...</td></tr></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TEACHERS ================= -->
+
+<section id="teachers" class="module">
+
+    <div class="page-heading">
+        <h1>Teachers</h1>
+        <p>Teacher and employee information</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+            <div>
+                <h2>Teacher Records</h2>
+                <p>Department, qualification and joining information</p>
+            </div>
+
+            <button class="primary" onclick="openModal('teacher')">
+                + Add Teacher
+            </button>
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Employee Code</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Qualification</th>
+                    <th>Joining Date</th>
+                    <th>Status</th>
+                        <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="teachersTableBody"><tr><td colspan="6">Loading teachers...</td></tr></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PARENTS ================= -->
+
+<section id="parents" class="module">
+
+    <div class="page-heading">
+        <h1>Parents</h1>
+        <p>Parent and guardian information</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+            <div>
+                <h2>Parent Records</h2>
+                <p>Contact and relationship information</p>
+            </div>
+
+            <button class="primary" onclick="openModal('parent')">
+                + Add Parent
+            </button>
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Parent Code</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                        <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="parentsTableBody"><tr><td colspan="6">Loading parents...</td></tr></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= COURSES ================= -->
+
+<section id="courses" class="module">
+
+    <div class="page-heading">
+        <h1>Courses</h1>
+        <p>Manage courses and teacher assignments</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>Course List</h2>
+                <p>Course code, grade and assigned teacher</p>
+            </div>
+
+            <button class="primary" onclick="openModal('course')">
+                + Add Course
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Description</th>
+                    <th>Grade</th>
+                    <th>Teacher</th>
+                    <th>Status</th>
+                        <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="coursesTableBody"><tr><td colspan="6">Loading courses...</td></tr></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ENROLLMENT ================= -->
+
+<section id="enrollment" class="module">
+
+    <div class="page-heading">
+        <h1>Enrollment</h1>
+        <p>Manage student course enrollment</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>Enrollment Records</h2>
+                <p>Student and course enrollment information</p>
+            </div>
+
+            <button class="primary" onclick="openModal('enrollment')">
+                + New Enrollment
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Enrollment ID</th>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Enrollment Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="enrollmentTableBody">
+
+                <tr>
+                    <td>1</td>
+                    <td>Arjun Kumar</td>
+                    <td>Mathematics</td>
+                    <td>10-06-2025</td>
+                    <td><span class="status-active">ACTIVE</span></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Arjun Kumar</td>
+                    <td>Science</td>
+                    <td>10-06-2025</td>
+                    <td><span class="status-active">ACTIVE</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ATTENDANCE ================= -->
+
+<section id="attendance" class="module">
+
+    <div class="page-heading">
+        <h1>Attendance</h1>
+        <p>Record and monitor student attendance</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>Attendance Records</h2>
+                <p>Student, course and attendance status</p>
+            </div>
+
+            <button class="primary" onclick="openModal('attendance')">
+                + Record Attendance
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Attendance</th>
+                    <th>Recorded By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="attendanceTableBody">
+
+                <tr>
+                    <td>Arjun Kumar</td>
+                    <td>Mathematics</td>
+                    <td>16-08-2026</td>
+                    <td><span class="status-active">PRESENT</span></td>
+                    <td>Ravi Kumar</td>
+                </tr>
+
+                <tr>
+                    <td>Ananya Sharma</td>
+                    <td>Science</td>
+                    <td>16-08-2026</td>
+                    <td><span class="status-active">PRESENT</span></td>
+                    <td>Priya Sharma</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ASSIGNMENTS ================= -->
+
+<section id="assignments" class="module">
+
+    <div class="page-heading">
+        <h1>Assignments</h1>
+        <p>Create and manage academic assignments</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>Assignment List</h2>
+                <p>Course assignments and due dates</p>
+            </div>
+
+            <button class="primary" onclick="openModal('assignment')">
+                + Create Assignment
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Course</th>
+                    <th>Teacher</th>
+                    <th>Assigned Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                        <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="assignmentsTableBody"><tr><td colspan="7">Loading assignments...</td></tr></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MARKS ================= -->
+
+<section id="marks" class="module">
+
+    <div class="page-heading">
+        <h1>Marks</h1>
+        <p>Assignment evaluation and student performance</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>Marks Records</h2>
+                <p>Student assignment performance</p>
+            </div>
+
+            <button class="primary" onclick="openModal('marks')">
+                + Enter Marks
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Assignment</th>
+                    <th>Marks Obtained</th>
+                    <th>Maximum Marks</th>
+                    <th>Grade</th>
+                    <th>Evaluated By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="marksTableBody">
+
+                <tr>
+                    <td>Arjun Kumar</td>
+                    <td>Algebra Practice</td>
+                    <td>45</td>
+                    <td>50</td>
+                    <td>A</td>
+                    <td>Ravi Kumar</td>
+                </tr>
+
+                <tr>
+                    <td>Ananya Sharma</td>
+                    <td>Science Project</td>
+                    <td>42</td>
+                    <td>50</td>
+                    <td>A</td>
+                    <td>Priya Sharma</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ================= AUDIT ================= -->
+
+<section id="audit" class="module">
+
+    <div class="page-heading">
+        <h1>Audit Logs</h1>
+        <p>System activity and security records</p>
+    </div>
+
+    <div class="module-card">
+
+        <div class="module-header">
+
+            <div>
+                <h2>Recent Activity</h2>
+                <p>Security and system actions</p>
+            </div>
+
+            <span class="live">● LIVE</span>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Table</th>
+                    <th>Record ID</th>
+                    <th>User</th>
+                    <th>Timestamp</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+
+            <tbody id="auditTableBody">
+
+                <tr>
+                    <td>LOGIN</td>
+                    <td>Users</td>
+                    <td>1</td>
+                    <td>admin01</td>
+                    <td>16-08-2026 10:30</td>
+                    <td>Administrator logged in</td>
+                </tr>
+
+                <tr>
+                    <td>CREATE</td>
+                    <td>Assignments</td>
+                    <td>2</td>
+                    <td>teacher01</td>
+                    <td>16-08-2026 11:05</td>
+                    <td>New assignment created</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+    </div>
+
+</main>
+
+</div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+                <h2 id="modalTitle">Add Record</h2>
+                <p style="font-size:11px;color:#64748b;margin-top:4px;">
+                    Enter the required information
+                </p>
+            </div>
+
+            <button class="close" onclick="closeModal()">×</button>
+
+        </div>
+
+
+        <div id="modalForm">
+
+            <!-- USER -->
+
+            <div id="userForm" class="form-content">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>User Code</label>
+                        <input id="userCode" placeholder="USR005">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input id="userUsername" placeholder="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input id="userEmail" placeholder="user@school.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input id="userPhone" placeholder="9876543210">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select id="userRole">
+                            <option value="1">Administrator</option>
+                            <option value="3">Teacher</option>
+                            <option value="4">Student</option>
+                            <option value="5">Parent</option>
+                            <option value="2">Staff</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="userStatus">
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STUDENT -->
+
+            <div id="studentForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Student Code</label><input id="studentCode" placeholder="STU005"></div>
+                    <div class="form-group"><label>First Name</label><input id="studentFirstName" placeholder="First name"></div>
+                    <div class="form-group"><label>Last Name</label><input id="studentLastName" placeholder="Last name"></div>
+                    <div class="form-group"><label>Date of Birth</label><input id="studentDob" type="date"></div>
+                    <div class="form-group"><label>Gender</label><select id="studentGender"><option value="">Select Gender</option><option value="MALE">Male</option><option value="FEMALE">Female</option><option value="OTHER">Other</option></select></div>
+                    <div class="form-group"><label>Grade</label><input id="studentGrade" type="number" placeholder="8"></div>
+                    <div class="form-group"><label>Section</label><input id="studentSection" placeholder="A"></div>
+                    <div class="form-group"><label>Admission Date</label><input id="studentAdmissionDate" type="date"></div>
+                    <div class="form-group"><label>Status</label><select id="studentStatus"><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- TEACHER -->
+
+            <div id="teacherForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Employee Code</label><input id="teacherEmployeeCode" placeholder="EMP005"></div>
+                    <div class="form-group"><label>First Name</label><input id="teacherFirstName" placeholder="First name"></div>
+                    <div class="form-group"><label>Last Name</label><input id="teacherLastName" placeholder="Last name"></div>
+                    <div class="form-group"><label>Department</label><input id="teacherDepartment" placeholder="Mathematics"></div>
+                    <div class="form-group"><label>Qualification</label><input id="teacherQualification" placeholder="M.Sc"></div>
+                    <div class="form-group"><label>Joining Date</label><input id="teacherJoiningDate" type="date"></div>
+                    <div class="form-group"><label>Status</label><select id="teacherStatus"><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- PARENT -->
+
+            <div id="parentForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Parent Code</label><input id="parentCode" placeholder="PAR005"></div>
+                    <div class="form-group"><label>First Name</label><input id="parentFirstName" placeholder="First name"></div>
+                    <div class="form-group"><label>Last Name</label><input id="parentLastName" placeholder="Last name"></div>
+                    <div class="form-group"><label>Phone</label><input id="parentPhone" placeholder="9876543210"></div>
+                    <div class="form-group full"><label>Email</label><input id="parentEmail" type="email" placeholder="parent@school.com"></div>
+                    <div class="form-group full"><label>Address</label><textarea id="parentAddress" placeholder="Address"></textarea></div>
+                    <div class="form-group"><label>Status</label><select id="parentStatus"><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- COURSE -->
+
+            <div id="courseForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Course Code</label><input id="courseCode" placeholder="MAT08"></div>
+                    <div class="form-group"><label>Course Name</label><input id="courseName" placeholder="Mathematics"></div>
+                    <div class="form-group"><label>Grade</label><input id="courseGrade" type="number" placeholder="8"></div>
+                    <div class="form-group"><label>Teacher</label><select id="courseTeacher"></select></div>
+                    <div class="form-group full"><label>Description</label><textarea id="courseDescription" placeholder="Course description"></textarea></div>
+                    <div class="form-group"><label>Status</label><select id="courseStatus"><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- ENROLLMENT -->
+
+            <div id="enrollmentForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Student</label><select id="enrollmentStudent"></select></div>
+                    <div class="form-group"><label>Course</label><select id="enrollmentCourse"></select></div>
+                    <div class="form-group"><label>Enrollment Date</label><input id="enrollmentDate" type="date"></div>
+                    <div class="form-group"><label>Status</label><select id="enrollmentStatus"><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- ATTENDANCE -->
+
+            <div id="attendanceForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Student</label><select id="attendanceStudent"></select></div>
+                    <div class="form-group"><label>Course</label><select id="attendanceCourse"></select></div>
+                    <div class="form-group"><label>Attendance Date</label><input id="attendanceDate" type="date"></div>
+                    <div class="form-group"><label>Status</label><select id="attendanceStatus"><option value="PRESENT">PRESENT</option><option value="ABSENT">ABSENT</option></select></div>
+                    <div class="form-group full"><label>Remarks</label><textarea id="attendanceRemarks" placeholder="Optional remarks"></textarea></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- ASSIGNMENT -->
+
+            <div id="assignmentForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group full"><label>Assignment Title</label><input id="assignmentTitle" placeholder="Algebra Practice"></div>
+                    <div class="form-group"><label>Course</label><select id="assignmentCourse"></select></div>
+                    <div class="form-group"><label>Teacher</label><select id="assignmentTeacher"></select></div>
+                    <div class="form-group full"><label>Description</label><textarea id="assignmentDescription" placeholder="Assignment description"></textarea></div>
+                    <div class="form-group"><label>Assigned Date</label><input id="assignmentAssignedDate" type="datetime-local"></div>
+                    <div class="form-group"><label>Due Date</label><input id="assignmentDueDate" type="datetime-local"></div>
+                    <div class="form-group"><label>Status</label><select id="assignmentStatus"><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                </div>
+            </div>
+
+            
+
+
+            <!-- MARKS -->
+
+            <div id="marksForm" class="form-content">
+                <div class="form-grid">
+                    <div class="form-group"><label>Student</label><select id="marksStudent"></select></div>
+                    <div class="form-group"><label>Assignment</label><select id="marksAssignment"></select></div>
+                    <div class="form-group"><label>Marks Obtained</label><input id="marksObtained" type="number" step="0.01" placeholder="45"></div>
+                    <div class="form-group"><label>Maximum Marks</label><input id="maximumMarks" type="number" step="0.01" placeholder="50"></div>
+                    <div class="form-group"><label>Grade</label><input id="marksGrade" placeholder="A"></div>
+                    <div class="form-group full"><label>Remarks</label><textarea id="marksRemarks" placeholder="Optional remarks"></textarea></div>
+                </div>
+            </div>
+
+            
+
+
+            <div class="form-actions">
+
+                <button class="secondary" onclick="closeModal()">
+                    Cancel
+                </button>
+
+                <button class="primary" onclick="saveCurrentForm()">
+                    Save
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+const API_BASE = (window.location.protocol.startsWith("http") && window.location.host)
+    ? window.location.origin
+    : "http://127.0.0.1:5000";
+let currentModalType = null;
+let editingRecord = null;
+let cache = {users:[],students:[],teachers:[],parents:[],courses:[],assignments:[],enrollments:[],attendance:[],marks:[]};
+
+function token(){return localStorage.getItem("hs_access_token")||"";}
+function authHeaders(){const t=token();return t?{"Authorization":"Bearer "+t}:{};}
+function showApp(){document.getElementById("loginScreen").style.display="none";document.getElementById("appShell").style.display="flex";}
+function showLogin(message=""){document.getElementById("appShell").style.display="none";document.getElementById("loginScreen").style.display="flex";const e=document.getElementById("loginError");e.textContent=message;e.style.display=message?"block":"none";}
+async function doLogin(){
+    const username=document.getElementById("loginUsername").value.trim();
+    const password=document.getElementById("loginPassword").value;
+    const e=document.getElementById("loginError");
+    e.style.display="none";
+    if(!username || !password){
+        e.textContent="Please enter both username and password.";
+        e.style.display="block";
+        return;
+    }
+    const btn = document.querySelector(".login-btn");
+    if(btn) { btn.disabled = true; btn.textContent = "Logging in..."; }
+    try{
+        const r=await fetch(API_BASE+"/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,password})});
+        const x=await r.json();
+        if(!r.ok)throw new Error(x.error||"Login failed");
+        localStorage.setItem("hs_access_token",x.token);
+        localStorage.setItem("hs_user",JSON.stringify(x.user));
+        showApp();
+        try {
+            await refreshAll();
+        } catch(refreshErr) {
+            console.warn("Initial data refresh warning:", refreshErr);
+        }
+    }catch(err){
+        e.textContent=err.message;
+        e.style.display="block";
+    }finally{
+        if(btn) { btn.disabled = false; btn.textContent = "Login"; }
+    }
+}
+function logout(){localStorage.removeItem("hs_access_token");localStorage.removeItem("hs_user");showLogin("You have been logged out.");}
+function showPage(page,button){
+    document.querySelectorAll(".module").forEach(s=>s.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+    document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
+    if(button)button.classList.add("active");
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+function resetForm(){
+    document.querySelectorAll("#modal input,#modal textarea").forEach(e=>{if(e.type!=="hidden")e.value="";});
+    document.querySelectorAll("#modal select").forEach(e=>{if(e.options.length)e.selectedIndex=0;});
+}
+function openModal(type, record=null){
+    currentModalType=type; editingRecord=record;
+    const titles={user:"Add User",student:"Add Student",teacher:"Add Teacher",parent:"Add Parent",course:"Add Course",enrollment:"New Enrollment",attendance:"Record Attendance",assignment:"Create Assignment",marks:"Enter Marks"};
+    document.getElementById("modalTitle").innerText=(record?"Edit ":"")+ (titles[type]||"Record");
+    document.querySelectorAll(".form-content").forEach(f=>f.style.display="none");
+    const form=document.getElementById(type+"Form");if(form)form.style.display="block";
+    if(!record)resetForm();
+    if(type==="course")populateTeacherSelect("courseTeacher",record?.teacher_id);
+    if(type==="enrollment"){populateCourseSelect("enrollmentCourse",record?.course_id);populateEnrollmentStudents(record?.course_id,record?.student_id);}
+    if(type==="attendance"){populateStudentSelect("attendanceStudent",record?.student_id);populateCourseSelect("attendanceCourse",record?.course_id);}
+    if(type==="assignment"){populateCourseSelect("assignmentCourse",record?.course_id);populateTeacherSelect("assignmentTeacher",record?.teacher_id);}
+    if(type==="marks"){populateStudentSelect("marksStudent",record?.student_id);populateAssignmentSelect("marksAssignment",record?.assignment_id);}
+    if(record)fillForm(type,record);
+    document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show");currentModalType=null;editingRecord=null;}
+async function apiGet(endpoint){
+    const r=await fetch(API_BASE+endpoint,{headers:authHeaders()});
+    let x={};try{x=await r.json();}catch(_){ }
+    if(r.status===401){logout();throw new Error("Session expired. Please log in again.");}
+    if(!r.ok)throw new Error(x.error||endpoint+" returned HTTP "+r.status);return x;
+}
+async function apiRequest(endpoint,method,body=null){
+    const o={method,headers:{...authHeaders(),"Content-Type":"application/json"}};if(body!==null)o.body=JSON.stringify(body);
+    const r=await fetch(API_BASE+endpoint,o);let x={};try{x=await r.json();}catch(_){ }
+    if(r.status===401){logout();throw new Error("Session expired. Please log in again.");}
+    if(!r.ok)throw new Error(x.error||x.details||("HTTP "+r.status));return x;
+}
+function formatDate(v){if(!v)return"—";const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString("en-IN");}
+function formatDateTime(v){if(!v)return"—";const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString("en-IN");}
+function statusBadge(s){return `<span class="status-active">${esc(s||"UNKNOWN")}</span>`;}
+function esc(v){if(v===null||v===undefined)return"";return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
+function opts(rows,key,label,selected){let h='<option value="">Select</option>';rows.forEach(r=>h+=`<option value="${r[key]}" ${String(r[key])===String(selected??"")?"selected":""}>${esc(label(r))}</option>`);return h;}
+function populateStudentSelect(id,selected){const e=document.getElementById(id);if(e)e.innerHTML=opts(cache.students,"student_id",s=>`${s.student_code} - ${s.first_name||""} ${s.last_name||""}`,selected);}
+function populateTeacherSelect(id,selected){const e=document.getElementById(id);if(e)e.innerHTML=opts(cache.teachers,"teacher_id",t=>`${t.employee_code} - ${t.first_name||""} ${t.last_name||""}`,selected);}
+function populateCourseSelect(id,selected){const e=document.getElementById(id);if(e)e.innerHTML=opts(cache.courses,"course_id",c=>`${c.course_code} - ${c.course_name}`,selected);}
+function populateAssignmentSelect(id,selected){const e=document.getElementById(id);if(e)e.innerHTML=opts(cache.assignments,"assignment_id",a=>`${a.assignment_id} - ${a.title}`,selected);}
+function populateEnrollmentStudents(courseId,keepStudentId=null){
+    const e=document.getElementById("enrollmentStudent");if(!e)return;
+    const enrolled=new Set(cache.enrollments.filter(x=>String(x.course_id)===String(courseId)).map(x=>String(x.student_id)));
+    const available=courseId?cache.students.filter(s=>!enrolled.has(String(s.student_id))||String(s.student_id)===String(keepStudentId)):cache.students;
+    e.innerHTML=opts(available,"student_id",s=>`${s.student_code} - ${s.first_name||""} ${s.last_name||""}`,keepStudentId);
+}
+
+async function loadUsers(){try{const rows=await apiGet("/users");cache.users=rows;const tb=document.getElementById("usersTableBody");tb.innerHTML="";const roles={1:"Administrator",2:"Staff",3:"Teacher",4:"Student",5:"Parent"};rows.forEach(u=>tb.innerHTML+=`<tr><td>${u.user_id}</td><td>${esc(u.user_code)}</td><td>${esc(u.username)}</td><td>${esc(u.email||"—")}</td><td>${roles[u.role_id]||"Role "+u.role_id}</td><td>${statusBadge(u.account_status)}</td><td><button class="edit" onclick='editRecord("user",${u.user_id})'>Edit</button> <button class="delete" onclick='deleteUser(${u.user_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadStudents(){try{const rows=await apiGet("/students");cache.students=rows;document.getElementById("statStudents").textContent=rows.length;document.getElementById("overviewStudents").textContent=rows.length;const tb=document.getElementById("studentsTableBody");tb.innerHTML="";rows.forEach(s=>tb.innerHTML+=`<tr><td>${esc(s.student_code)}</td><td>${esc(`${s.first_name||""} ${s.last_name||""}`.trim())}</td><td>${formatDate(s.date_of_birth)}</td><td>${s.grade??"—"}</td><td>${esc(s.section)}</td><td>${formatDate(s.admission_date)}</td><td>${statusBadge(s.status)}</td><td><button class="edit" onclick='editRecord("student",${s.student_id})'>Edit</button> <button class="delete" onclick='deleteStudent(${s.student_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadTeachers(){try{const rows=await apiGet("/teachers");cache.teachers=rows;document.getElementById("statTeachers").textContent=rows.length;document.getElementById("overviewTeachers").textContent=rows.length;const tb=document.getElementById("teachersTableBody");tb.innerHTML="";rows.forEach(t=>tb.innerHTML+=`<tr><td>${esc(t.employee_code)}</td><td>${esc(`${t.first_name||""} ${t.last_name||""}`.trim())}</td><td>${esc(t.department)}</td><td>${esc(t.qualification)}</td><td>${formatDate(t.joining_date)}</td><td>${statusBadge(t.status)}</td><td><button class="edit" onclick='editRecord("teacher",${t.teacher_id})'>Edit</button> <button class="delete" onclick='deleteTeacher(${t.teacher_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadParents(){try{const rows=await apiGet("/parents");cache.parents=rows;document.getElementById("overviewParents").textContent=rows.length;const tb=document.getElementById("parentsTableBody");tb.innerHTML="";rows.forEach(p=>tb.innerHTML+=`<tr><td>${esc(p.parent_code)}</td><td>${esc(`${p.first_name||""} ${p.last_name||""}`.trim())}</td><td>${esc(p.phone_num)}</td><td>${esc(p.email)}</td><td>${esc(p.address)}</td><td>${statusBadge(p.status)}</td><td><button class="edit" onclick='editRecord("parent",${p.parent_id})'>Edit</button> <button class="delete" onclick='deleteParent(${p.parent_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadCourses(){try{const rows=await apiGet("/courses");cache.courses=rows;document.getElementById("statCourses").textContent=rows.length;document.getElementById("overviewCourses").textContent=rows.length;const tb=document.getElementById("coursesTableBody");tb.innerHTML="";rows.forEach(c=>tb.innerHTML+=`<tr><td>${esc(c.course_code)}</td><td>${esc(c.course_name)}</td><td>${esc(c.description)}</td><td>${c.grade??"—"}</td><td>Teacher ID: ${c.teacher_id??"—"}</td><td>${statusBadge(c.status)}</td><td><button class="edit" onclick='editRecord("course",${c.course_id})'>Edit</button> <button class="delete" onclick='deleteCourse(${c.course_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadAssignments(){try{const rows=await apiGet("/assignments");cache.assignments=rows;document.getElementById("statAssignments").textContent=rows.length;const tb=document.getElementById("assignmentsTableBody");tb.innerHTML="";rows.forEach(a=>tb.innerHTML+=`<tr><td>${a.assignment_id}</td><td>${esc(a.title)}</td><td>Course ID: ${a.course_id}</td><td>Teacher ID: ${a.teacher_id}</td><td>${formatDateTime(a.assigned_date)}</td><td>${formatDateTime(a.due_date)}</td><td>${statusBadge(a.status)}</td><td><button class="edit" onclick='editRecord("assignment",${a.assignment_id})'>Edit</button> <button class="delete" onclick='deleteAssignment(${a.assignment_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadEnrollments(){try{const rows=await apiGet("/enrollment");cache.enrollments=rows;document.getElementById("statEnrollments").textContent=rows.length;document.getElementById("overviewEnrollments").textContent=rows.filter(x=>x.status==="ACTIVE").length;const tb=document.getElementById("enrollmentTableBody");tb.innerHTML="";rows.forEach(x=>tb.innerHTML+=`<tr><td>${x.enrollment_id}</td><td>Student ID: ${x.student_id}</td><td>Course ID: ${x.course_id}</td><td>${formatDate(x.enrollment_date)}</td><td>${statusBadge(x.status)}</td><td><button class="edit" onclick='editRecord("enrollment",${x.enrollment_id})'>Edit</button> <button class="delete" onclick='deleteEnrollment(${x.enrollment_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadAttendance(){try{const rows=await apiGet("/attendance");cache.attendance=rows;const tb=document.getElementById("attendanceTableBody");tb.innerHTML="";rows.forEach(a=>tb.innerHTML+=`<tr><td>Student ID: ${a.student_id}</td><td>Course ID: ${a.course_id}</td><td>${formatDate(a.attendance_date)}</td><td>${statusBadge(a.attendance_status)}</td><td>User ID: ${a.recorded_by??"—"}</td><td><button class="edit" onclick='editRecord("attendance",${a.attendance_id})'>Edit</button> <button class="delete" onclick='deleteAttendance(${a.attendance_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadMarks(){try{const rows=await apiGet("/marks");cache.marks=rows;const tb=document.getElementById("marksTableBody");tb.innerHTML="";rows.forEach(m=>tb.innerHTML+=`<tr><td>Student ID: ${m.student_id}</td><td>Assignment ID: ${m.assignment_id}</td><td>${m.marks_obtained}</td><td>${m.maximum_marks}</td><td>${esc(m.grade)}</td><td>Teacher ID: ${m.evaluated_by??"—"}</td><td><button class="edit" onclick='editRecord("marks",${m.mark_id})'>Edit</button> <button class="delete" onclick='deleteMark(${m.mark_id})'>Delete</button></td></tr>`);}catch(e){console.error(e);}}
+async function loadAudit(){try{const rows=await apiGet("/audit-logs");const tb=document.getElementById("auditTableBody");tb.innerHTML="";rows.forEach(a=>tb.innerHTML+=`<tr><td>${esc(a.action)}</td><td>${esc(a.table_name)}</td><td>${a.record_id??"—"}</td><td>User ID: ${a.user_id??"—"}</td><td>${formatDateTime(a.action_timestamp)}</td><td>${esc(a.description||"—")}</td></tr>`);}catch(e){console.error(e);}}
+
+function fillForm(type,r){
+    if(type==="user"){userCode.value=r.user_code||"";userUsername.value=r.username||"";userEmail.value=r.email||"";userPhone.value=r.phone_num||"";userRole.value=r.role_id;userStatus.value=r.account_status||"ACTIVE";}
+    if(type==="student"){studentCode.value=r.student_code||"";studentFirstName.value=r.first_name||"";studentLastName.value=r.last_name||"";studentDob.value=(r.date_of_birth||"").slice(0,10);studentGender.value=r.gender||"";studentGrade.value=r.grade??"";studentSection.value=r.section||"";studentAdmissionDate.value=(r.admission_date||"").slice(0,10);studentStatus.value=r.status||"ACTIVE";}
+    if(type==="teacher"){teacherEmployeeCode.value=r.employee_code||"";teacherFirstName.value=r.first_name||"";teacherLastName.value=r.last_name||"";teacherDepartment.value=r.department||"";teacherQualification.value=r.qualification||"";teacherJoiningDate.value=(r.joining_date||"").slice(0,10);teacherStatus.value=r.status||"ACTIVE";}
+    if(type==="parent"){parentCode.value=r.parent_code||"";parentFirstName.value=r.first_name||"";parentLastName.value=r.last_name||"";parentPhone.value=r.phone_num||"";parentEmail.value=r.email||"";parentAddress.value=r.address||"";parentStatus.value=r.status||"ACTIVE";}
+    if(type==="course"){courseCode.value=r.course_code||"";courseName.value=r.course_name||"";courseGrade.value=r.grade??"";courseTeacher.value=r.teacher_id;courseDescription.value=r.description||"";courseStatus.value=r.status||"ACTIVE";}
+    if(type==="enrollment"){enrollmentStudent.value=r.student_id;enrollmentCourse.value=r.course_id;enrollmentDate.value=(r.enrollment_date||"").slice(0,10);enrollmentStatus.value=r.status||"ACTIVE";}
+    if(type==="attendance"){attendanceStudent.value=r.student_id;attendanceCourse.value=r.course_id;attendanceDate.value=(r.attendance_date||"").slice(0,10);attendanceStatus.value=r.attendance_status||"PRESENT";attendanceRemarks.value=r.remarks||"";}
+    if(type==="assignment"){assignmentTitle.value=r.title||"";assignmentCourse.value=r.course_id;assignmentTeacher.value=r.teacher_id;assignmentDescription.value=r.description||"";assignmentAssignedDate.value=(r.assigned_date||"").slice(0,16);assignmentDueDate.value=(r.due_date||"").slice(0,16);assignmentStatus.value=r.status||"ACTIVE";}
+    if(type==="marks"){marksStudent.value=r.student_id;marksAssignment.value=r.assignment_id;marksObtained.value=r.marks_obtained??"";maximumMarks.value=r.maximum_marks??"";marksGrade.value=r.grade||"";marksRemarks.value=r.remarks||"";}
+}
+function findRecord(type,id){const map={user:"users",student:"students",teacher:"teachers",parent:"parents",course:"courses",assignment:"assignments",enrollment:"enrollments",attendance:"attendance",marks:"marks"};return cache[map[type]].find(x=>String(x[type==="user"?"user_id":type==="marks"?"mark_id":type+"_id"])===String(id));}
+function editRecord(type,id){const r=findRecord(type,id);if(r)openModal(type,r);}
+
+async function saveCurrentForm(){try{
+    const edit=editingRecord; const type=currentModalType;
+    if(type==="student")await saveStudent(edit); else if(type==="teacher")await saveTeacher(edit); else if(type==="parent")await saveParent(edit); else if(type==="course")await saveCourse(edit); else if(type==="enrollment")await saveEnrollment(edit); else if(type==="attendance")await saveAttendance(edit); else if(type==="assignment")await saveAssignment(edit); else if(type==="marks")await saveMarks(edit); else if(type==="user")await saveUser(edit);
+}catch(e){console.error(e);alert("Save failed: "+e.message);}}
+async function saveStudent(edit){
+    const d={student_code:studentCode.value.trim(),first_name:studentFirstName.value.trim(),last_name:studentLastName.value.trim(),date_of_birth:studentDob.value,gender:studentGender.value,grade:parseInt(studentGrade.value),section:studentSection.value.trim(),admission_date:studentAdmissionDate.value,status:studentStatus.value};
+    await apiRequest(edit?`/students/${edit.student_id}`:"/students",edit?"PUT":"POST",d);
+    alert(edit?"Student updated successfully.":"Student created successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveTeacher(edit){
+    const d={employee_code:teacherEmployeeCode.value.trim(),first_name:teacherFirstName.value.trim(),last_name:teacherLastName.value.trim(),department:teacherDepartment.value.trim(),qualification:teacherQualification.value.trim(),joining_date:teacherJoiningDate.value,status:teacherStatus.value};
+    await apiRequest(edit?`/teachers/${edit.teacher_id}`:"/teachers",edit?"PUT":"POST",d);
+    alert(edit?"Teacher updated successfully.":"Teacher created successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveParent(edit){
+    const d={parent_code:parentCode.value.trim(),first_name:parentFirstName.value.trim(),last_name:parentLastName.value.trim(),phone_num:parentPhone.value.trim(),email:parentEmail.value.trim(),address:parentAddress.value.trim(),status:parentStatus.value};
+    await apiRequest(edit?`/parents/${edit.parent_id}`:"/parents",edit?"PUT":"POST",d);
+    alert(edit?"Parent updated successfully.":"Parent created successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveCourse(edit){
+    const d={course_code:courseCode.value.trim(),course_name:courseName.value.trim(),description:courseDescription.value.trim(),grade:parseInt(courseGrade.value),teacher_id:parseInt(courseTeacher.value),status:courseStatus.value};
+    await apiRequest(edit?`/courses/${edit.course_id}`:"/courses",edit?"PUT":"POST",d);
+    alert(edit?"Course updated successfully.":"Course created successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveEnrollment(edit){
+    const d={student_id:parseInt(enrollmentStudent.value),course_id:parseInt(enrollmentCourse.value),enrollment_date:enrollmentDate.value,status:enrollmentStatus.value};
+    await apiRequest("/enrollment","POST",d);
+    alert("Enrollment created successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveAttendance(edit){
+    const d={student_id:parseInt(attendanceStudent.value),course_id:parseInt(attendanceCourse.value),attendance_date:attendanceDate.value,attendance_status:attendanceStatus.value,remarks:attendanceRemarks.value.trim()};
+    await apiRequest(edit?`/attendance/${edit.attendance_id}`:"/attendance",edit?"PUT":"POST",d);
+    alert(edit?"Attendance updated successfully.":"Attendance recorded successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveAssignment(edit){
+    const d={course_id:parseInt(assignmentCourse.value),teacher_id:parseInt(assignmentTeacher.value),title:assignmentTitle.value.trim(),description:assignmentDescription.value.trim(),assigned_date:assignmentAssignedDate.value,due_date:assignmentDueDate.value,status:assignmentStatus.value};
+    await apiRequest(edit?`/assignments/${edit.assignment_id}`:"/assignments",edit?"PUT":"POST",d);
+    alert(edit?"Assignment updated successfully.":"Assignment created successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveMarks(edit){
+    const d={student_id:parseInt(marksStudent.value),assignment_id:parseInt(marksAssignment.value),marks_obtained:parseFloat(marksObtained.value),maximum_marks:parseFloat(maximumMarks.value),grade:marksGrade.value.trim(),remarks:marksRemarks.value.trim()};
+    await apiRequest(edit?`/marks/${edit.mark_id}`:"/marks",edit?"PUT":"POST",d);
+    alert(edit?"Marks updated successfully.":"Marks saved successfully.");
+    closeModal();
+    await refreshAll();
+}
+
+async function saveUser(edit){
+    const d={user_code:userCode.value.trim(),username:userUsername.value.trim(),email:userEmail.value.trim(),phone_num:userPhone.value.trim(),role_id:parseInt(userRole.value),password:"User@123"};
+    await apiRequest("/users","POST",d);
+    alert("User created successfully. Temporary password: User@123");
+    closeModal();
+    await refreshAll();
+}
+
+async function del(ep,label){
+    if(!confirm("Are you sure you want to delete this "+label+"?")) return;
+    try{
+        const r=await apiRequest(ep,"DELETE");
+        alert(r.message||label+" deleted successfully.");
+        await refreshAll();
+    }catch(e){
+        alert("Action failed: "+e.message);
+    }
+}
+async function deleteUser(id){await del("/users/"+id,"user");}
+async function deleteStudent(id){await del("/students/"+id,"student");}
+async function deleteTeacher(id){await del("/teachers/"+id,"teacher");}
+async function deleteParent(id){await del("/parents/"+id,"parent");}
+async function deleteCourse(id){await del("/courses/"+id,"course");}
+async function deleteAssignment(id){await del("/assignments/"+id,"assignment");}
+async function deleteEnrollment(id){await del("/enrollment/"+id,"enrollment");}
+async function deleteAttendance(id){await del("/attendance/"+id,"attendance");}
+async function deleteMark(id){await del("/marks/"+id,"mark");}
+
+async function refreshAll(){
+    const u = JSON.parse(localStorage.getItem("hs_user") || "{}");
+    const roleId = u.role_id;
+    const tasks = [
+        loadStudents(),
+        loadTeachers(),
+        loadParents(),
+        loadCourses(),
+        loadAssignments(),
+        loadEnrollments(),
+        loadAttendance(),
+        loadMarks()
+    ];
+    if(roleId === 1 || !roleId) {
+        tasks.push(loadUsers());
+        tasks.push(loadAudit());
+    }
+    await Promise.allSettled(tasks);
+}
+
+window.onclick=function(e){if(e.target===document.getElementById("modal"))closeModal();};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    const pInput = document.getElementById("loginPassword");
+    const uInput = document.getElementById("loginUsername");
+    if(pInput) pInput.addEventListener("keyup", (e)=>{if(e.key==="Enter")doLogin();});
+    if(uInput) uInput.addEventListener("keyup", (e)=>{if(e.key==="Enter")doLogin();});
+    // Always clear session on fresh page load — user must login every time
+    localStorage.removeItem("hs_access_token");
+    localStorage.removeItem("hs_user");
+    showLogin();
+});
+</script>
+</body>
+</html>
