@@ -12,12 +12,12 @@
 * **Database Engine:** PostgreSQL 16 (Relational Database Management System)
 
 ### Team Members & Contributions
-| Student Name | Roll Number | Key Academic & DBMS Project Contributions |
-| :--- | :--- | :--- |
-| **K. Siva Aditya** | `CB.SC.U4AIE24126` | Relational Schema Modeling, Referential Constraints, 1NF to BCNF Normalization |
-| **M. Jayesh** | `CB.SC.U4AIE24128` | PostgreSQL Database Architecture, Zero-Trust Access Layer, REST APIs |
-| **N. Srinivas** | `CB.SC.U4AIE24140` | Frontend Interface, Role-Based Access Control, Security Audit Logging |
-| **MV. Mukesh** | `CB.SC.U4AIE24138` | Database DDL/DML, Advanced Multi-Table Queries, Subqueries & Aggregations |
+| S. No. | Name | Roll Number | Email |
+|---|---|---|---|
+| 1 | Majji Jayesh | cb.sc.u4aie24128 | cb.sc.u4aie24128@cb.students.amrita.edu |
+| 2 | Kotyada Siva Adityan | cb.sc.u4aie24126 | cb.sc.u4aie24126@cb.students.amrita.edu |
+| 3 | Muvva Venkata Mukesh| cb.sc.u4aie24138 | cb.sc.u4aie24138@cb.students.amrita.edu |
+| 4 | Narni Srinivas | cb.sc.u4aie24140 | cb.sc.u4aie24140@cb.students.amrita.edu |
 
 ---
 
